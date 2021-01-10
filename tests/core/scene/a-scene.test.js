@@ -146,13 +146,21 @@ suite('a-scene (without renderer)', function () {
         getContext: function () { return undefined; },
         setAnimationLoop: function () {},
         setPixelRatio: function () {},
-        setSize: function () {}
+        setSize: function () {},
+        render: function () {}
       };
 
       // mock camera
       sceneEl.camera = {
         el: {object3D: {}},
         updateProjectionMatrix: function () {}
+      };
+
+      // mock canvas
+      sceneEl.canvas = {
+        addEventListener: function () {},
+        removeEventListener: function () {},
+        requestFullscreen: function () {}
       };
     });
 
@@ -197,6 +205,15 @@ suite('a-scene (without renderer)', function () {
       var sceneEl = this.el;
       sceneEl.enterVR().then(function () {
         assert.ok(sceneEl.is('vr-mode'));
+        done();
+      });
+    });
+
+    helpers.getSkipCITest()('adds AR mode state', function (done) {
+      var sceneEl = this.el;
+      sceneEl.enterVR(true).then(function () {
+        assert.notOk(sceneEl.is('vr-mode'));
+        assert.ok(sceneEl.is('ar-mode'));
         done();
       });
     });
@@ -251,7 +268,8 @@ suite('a-scene (without renderer)', function () {
         },
         setAnimationLoop: function () {},
         setPixelRatio: function () {},
-        setSize: function () {}
+        setSize: function () {},
+        render: function () {}
       };
 
       sceneEl.addState('vr-mode');
@@ -419,7 +437,8 @@ suite('a-scene (without renderer)', function () {
           setDevice: function () {}
         },
         setAnimationLoop: function () {},
-        setSize: setSizeSpy
+        setSize: setSizeSpy,
+        render: function () {}
       };
     });
 
